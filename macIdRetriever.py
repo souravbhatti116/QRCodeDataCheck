@@ -1,4 +1,4 @@
-#Limestone  Checker
+
 # Sourav Bhatti
 #6/1/2022
 
@@ -41,7 +41,7 @@ tk.Label(root, text= "Please select the Data you want to check." ,font=text,  wi
 
 combolist = Combobox(root, textvariable=comboOption, font=text, width=35, height=15, state='readonly' )
 combolist.grid(column=2, row=1, pady=10)
-combolist['values']=["MacId Duplicate Check","MacId","Firmware Version","PCBA","Sim Card Carrier","Sim Card Number","IMEI Gateway", "Region", "Team Viewer ID"]
+combolist['values']=["MacId Duplicate Check","MacId","Firmware Version","PCBA", "Ship Date", "Battery Type", "Sim Card Carrier","Sim Card Number","IMEI Gateway", "Region", "Team Viewer ID"]
 combolist.current(0)
 root.option_add("*TCombobox*Listbox*Font", comboBoxFont)   # Change the font of the list
 
@@ -220,6 +220,15 @@ def getMacId():
         elif comboOption.get() =="IMEI Gateway" :
             macid = data[0]['IMEInumber'] 
             status = ""
+
+        elif comboOption.get() =="Battery Type" :
+            macid = data[0]['batteryType'] 
+            status = ""
+
+        elif comboOption.get() =="Ship Date" :
+            macid = data[0]['shipDate'][0:10] 
+            status = ""
+
         elif comboOption.get() =="Sim Card Carrier" :
             macid = data[0]['comment'] 
             string = str(macid)
@@ -269,7 +278,7 @@ def getMacId():
         #     data = {"Date":[f"{tstamp}"],"QR code":[f"{qrCode.get()}"],"Data Type":[f"{comboOption.get()}"], "Data Value":[f'{macid}'], "Status":[f'{status}'] }
         #     df = pd.DataFrame(data)
         #     df.to_excel(file, index=False, header=False )
-
+    shipcountLabel.config(text=f"{len(displaydata.get_children())}")
     qrEntry.delete(0,END)
 
 
@@ -362,6 +371,15 @@ def batchMacId():
                 elif comboOption.get() =="IMEI Gateway" :
                     macid = data[0]['IMEInumber'] 
                     status = ""
+
+                elif comboOption.get() =="Battery Type" :
+                    macid = data[0]['batteryType'] 
+                    status = ""
+
+                elif comboOption.get() =="Ship Date" :
+                    macid = data[0]['shipDate'] 
+                    status = ""
+
                 elif comboOption.get() =="Sim Card Carrier" :
                     macid = data[0]['comment'] 
                     string = str(macid)
@@ -391,6 +409,7 @@ def batchMacId():
                     displaydata.insert('', END,
                             values=[qrcode,comboOption.get(), macid])
                     displaydata.yview_moveto(1)
+                    
                 else:
                     messagebox.showerror("Macid not found for ",qrCode.get())
                 serverResponse = json.dumps(data)
@@ -410,7 +429,8 @@ def batchMacId():
 
         return                       
 
-  
+
+
 
 
 #################################################################
